@@ -581,7 +581,7 @@ configure:6321: $? = 0
 configure:6321: result: yes
 configure:6488: checking for library containing putmsg
 configure:6519: gcc -o conftest -g -O2   conftest.c  >&5
-/usr/bin/ld: /tmp/ccdmuZo9.o: in function `main':
+/usr/bin/ld: /tmp/ccTLlmpu.o: in function `main':
 /home/lsm/networkstack/thirdparty/libpcap/conftest.c:46:(.text.startup+0xb): undefined reference to `putmsg'
 collect2: error: ld returned 1 exit status
 configure:6519: $? = 1
@@ -2288,11 +2288,11 @@ configure:9746: checking lex output file root
 configure:9760: result: lex.yy
 configure:9765: checking lex library
 configure:9779: gcc -o conftest -g -O2   conftest.c   >&5
-/usr/bin/ld: /tmp/ccaXMmwt.o: in function `input':
+/usr/bin/ld: /tmp/ccdaaLUw.o: in function `input':
 /home/lsm/networkstack/thirdparty/libpcap/lex.yy.c:1180:(.text+0xf17): undefined reference to `yywrap'
-/usr/bin/ld: /tmp/ccaXMmwt.o: in function `yylex':
+/usr/bin/ld: /tmp/ccdaaLUw.o: in function `yylex':
 /home/lsm/networkstack/thirdparty/libpcap/lex.yy.c:871:(.text+0x1129): undefined reference to `yywrap'
-/usr/bin/ld: /tmp/ccaXMmwt.o: in function `main':
+/usr/bin/ld: /tmp/ccdaaLUw.o: in function `main':
 /home/lsm/networkstack/thirdparty/libpcap/conftest.l:17:(.text.startup+0xd): undefined reference to `yywrap'
 collect2: error: ld returned 1 exit status
 configure:9779: $? = 1

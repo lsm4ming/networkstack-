@@ -39,6 +39,5 @@ add_definitions(-DNET_DRIVER_PCAP)    # use pcap
 
 message(STATUS "current platform: ${CMAKE_HOST_SYSTEM_NAME}")
 
-# 链接libpcap库
-# find_package(Pcap REQUIRED)
-target_link_libraries(${PROJECT_NAME} ${PCAP_ROOT_DIR}/libpcap.a ${OPENSSL_ROOT_DIR}/libssl.a ${OPENSSL_ROOT_DIR}/libcrypto.a)
+add_definitions(-DSYS_PLAT_LINUX)
+target_link_libraries(${PROJECT_NAME} ${PCAP_ROOT_DIR}/libpcap.a ${OPENSSL_ROOT_DIR}/libssl.a ${OPENSSL_ROOT_DIR}/libcrypto.a pthread)

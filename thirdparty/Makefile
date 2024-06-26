@@ -13,7 +13,7 @@ OPENSSL_DIR=openssl-$(OPENSSL_VERSION)
 all: pre install-pcap build-pcap install-openssl build-openssl
 
 pre:
-	apt-get install flex bison
+	sudo apt install flex bison
 
 install-pcap:
 	wget $(PCAP_URL)

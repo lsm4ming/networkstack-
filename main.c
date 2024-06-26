@@ -1,23 +1,27 @@
 #include <stdio.h>
 #include <pcap.h>
+#include "sys_plat.h"
 
 int main()
 {
-    pcap_if_t *alldevs;
-    char errbuf[PCAP_ERRBUF_SIZE];
-
-    if (pcap_findalldevs(&alldevs, errbuf) == -1)
+    pcap_t *pcap = pcap_device_open(netdev0_phy_ip, netdev0_hwaddr);
+    while (pcap)
     {
-        printf("Error finding devices: %s\n" , errbuf);
-        return 1;
-    }
+        static uint8_t buffer[1024];
+        static int count = 0;
+        plat_printf("begin test:%d\n", count++);
+        for (size_t i = 0; i < sizeof(buffer); i++)
+        {
+            buffer[i] = i;
+        }
 
-    printf("%s\n" , "Available devices:");
-    for (pcap_if_t *d = alldevs; d != NULL; d = d->next)
-    {
-         printf("%s\n" , d->name);
+        if (pcap_inject(pcap, buffer, sizeof(buffer)) == -1)
+        {
+            plat_printf("pcap send fail,err:%s\n", pcap_geterr(pcap));
+            return -1;
+        }
+        
+        sys_sleep(10);
     }
-
-    pcap_freealldevs(alldevs);
     return 0;
 }
