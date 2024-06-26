@@ -8,3 +8,8 @@ pre:
 
 build:
 	cd libpcap && ./configure && make
+
+install-openssl:
+	wget https://www.openssl.org/source/openssl-3.0.14.tar.gz
+	tar -xzvf openssl-3.0.14.tar.gz
+	mv openssl-3.0.14 openssl
