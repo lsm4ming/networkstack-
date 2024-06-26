@@ -8,8 +8,12 @@ set(CMAKE_C_STANDARD 99)
 # 指定libpcap路径
 set(PCAP_ROOT_DIR ${CMAKE_SOURCE_DIR}/thirdparty/libpcap)
 
-# 包含libpcap的头文件
+# 指定openssl路径
+set(OPENSSL_ROOT_DIR ${CMAKE_SOURCE_DIR}/thirdparty/openssl)
+
+# 包含三方依赖的头文件
 include_directories(${PCAP_ROOT_DIR})
+include_directories(${OPENSSL_ROOT_DIR}/include)
 
 # 给visual studio编译器使用的宏，Enable GCC debug
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
@@ -37,4 +41,4 @@ message(STATUS "current platform: ${CMAKE_HOST_SYSTEM_NAME}")
 
 # 链接libpcap库
 # find_package(Pcap REQUIRED)
-target_link_libraries(${PROJECT_NAME} ${PCAP_ROOT_DIR}/libpcap.a)
+target_link_libraries(${PROJECT_NAME} ${PCAP_ROOT_DIR}/libpcap.a ${OPENSSL_ROOT_DIR}/libssl.a ${OPENSSL_ROOT_DIR}/libcrypto.a)
