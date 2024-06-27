@@ -3,3 +3,5 @@ thirdparty/libpcap
 thirdparty/openssl
 
 build
+
+.idea

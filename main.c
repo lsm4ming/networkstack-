@@ -2,9 +2,14 @@
 #include <pcap.h>
 #include "sys_plat.h"
 
-int main()
+int main(int argc,char** argv)
 {
-    pcap_t *pcap = pcap_device_open(netdev0_phy_ip, netdev0_hwaddr);
+    char *ip = (char*) netdev0_phy_ip;
+    if(argc > 1)
+    {
+        ip = argv[1];
+    }
+    pcap_t *pcap = pcap_device_open(ip, netdev0_hwaddr);
     while (pcap)
     {
         static uint8_t buffer[1024];
@@ -20,8 +25,8 @@ int main()
             plat_printf("pcap send fail,err:%s\n", pcap_geterr(pcap));
             return -1;
         }
-        
-        sys_sleep(10);
+
+        sys_sleep(100);
     }
     return 0;
 }
