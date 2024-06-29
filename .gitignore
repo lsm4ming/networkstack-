@@ -5,3 +5,5 @@ thirdparty/openssl
 build
 
 .idea
+
+cmake-build-debug

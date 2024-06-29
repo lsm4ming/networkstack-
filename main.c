@@ -12,10 +12,10 @@ int main(int argc,char** argv)
     pcap_t *pcap = pcap_device_open(ip, netdev0_hwaddr);
     while (pcap)
     {
-        static uint8_t buffer[1024];
+        static uint8_t buffer[1024] = "hello";
         static int count = 0;
         plat_printf("begin test:%d\n", count++);
-        for (size_t i = 0; i < sizeof(buffer); i++)
+        for (size_t i = 4; i < sizeof(buffer); i++)
         {
             buffer[i] = i;
         }
