@@ -3,8 +3,49 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include "sys_plat.h"
+#include "ring_queue.h"
 
 #define DEFAULT_INTERFACE "ens33"
+
+static sys_sem_t sem;
+static sys_mutex_t mutex;
+static int count = 0;
+
+void thread_job1(void *arg)
+{
+    for (size_t i = 0; i < 1000000; i++)
+    {
+        sys_mutex_lock(mutex);
+        count++;
+        sys_mutex_unlock(mutex);
+    }
+    plat_printf("线程thread_job1 count :%d\n", count);
+
+    while (1)
+    {
+        sys_sem_wait(sem, -1);
+        plat_printf("线程thread_job1运行 :%s\n", (char *)arg);
+    }
+}
+
+void thread_job2(void *arg)
+{
+    for (size_t i = 0; i < 1000000; i++)
+    {
+        sys_mutex_lock(mutex);
+        count--;
+        sys_mutex_unlock(mutex);
+    }
+    plat_printf("线程thread_job2 count :%d\n", count);
+
+    while (1)
+    {
+        plat_printf("线程thread_job2运行 :%s\n", (char *)arg);
+        sys_sleep(500);
+        sys_sem_notify(sem);
+        sys_sleep(500);
+    }
+}
 
 void show_mac_addr(uint8_t *mac_addr)
 {
@@ -14,7 +55,7 @@ void show_mac_addr(uint8_t *mac_addr)
 // 获取当前机器的mac地址
 int get_mac_addr(char *interface, uint8_t *mac_addr)
 {
-    if(interface == NULL)
+    if (interface == NULL)
     {
         interface = DEFAULT_INTERFACE;
     }
@@ -30,7 +71,7 @@ int get_mac_addr(char *interface, uint8_t *mac_addr)
     char mac_addr_str[18];
     if (fgets(mac_addr_str, sizeof(mac_addr_str), fp) == NULL)
     {
-        printf("Error reading MAC Address\n");
+        plat_printf("Error reading MAC Address\n");
     }
     sscanf(mac_addr_str, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
            &mac_addr[0], &mac_addr[1], &mac_addr[2],
@@ -47,6 +88,28 @@ int main(int argc, char **argv)
     {
         ip = argv[1];
     }
+
+    sem = sys_sem_create(0);
+    mutex = sys_mutex_create();
+    sys_thread_create(thread_job1, "AAA");
+    sys_thread_create(thread_job2, "BBB");
+
+    ring_queue_t *queue = create_ring_queue(10);
+    for (size_t i = 'a'; i < 'z'; i++)
+    {
+        if (i % 2 == 1)
+        {
+            ring_queue_insert(queue, (char)i);
+        }
+        else
+        {
+            char data = ring_queue_pop(queue);
+            plat_printf("环形队列取出元素 %c\n", data);
+        }
+    }
+
+    sys_sleep(100 * 1000);
+    return;
 
     uint8_t mac_addr[6];
     get_mac_addr(NULL, mac_addr);
