@@ -19,14 +19,22 @@ int main(int argc,char** argv)
         {
             buffer[i] = i;
         }
-
-        if (pcap_inject(pcap, buffer, sizeof(buffer)) == -1)
+        struct pcap_pkthdr *pkthdr;
+        const uint8_t *pk_data;
+        if(pcap_next_ex(pcap , &pkthdr, &pk_data)<0)
+        {
+            plat_printf("recv_net_pack fail,err:%s\n", pcap_geterr(pcap));
+            return -1;
+        }
+        uint32_t read_len = pkthdr->len > sizeof(buffer)? sizeof(buffer) : pkthdr->len;
+        plat_memcpy(buffer, pk_data, read_len);
+        buffer[0] = 1;
+        buffer[1] = 2;
+        if (pcap_inject(pcap, buffer, read_len) == -1)
         {
             plat_printf("pcap send fail,err:%s\n", pcap_geterr(pcap));
             return -1;
         }
-
-        sys_sleep(100);
     }
     return 0;
 }
