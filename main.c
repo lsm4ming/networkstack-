@@ -4,6 +4,7 @@
 #include <arpa/inet.h>
 #include "sys_plat.h"
 #include "ring_queue.h"
+#include "tcp_echo_client.h"
 
 #define DEFAULT_INTERFACE "ens33"
 
@@ -89,6 +90,11 @@ int main(int argc, char **argv)
         ip = argv[1];
     }
 
+    if(tcp_echo_client_start("192.168.31.234", 53000)<0)
+    {
+        exit(-1);
+    }
+
     sem = sys_sem_create(0);
     mutex = sys_mutex_create();
     sys_thread_create(thread_job1, "AAA");
@@ -109,7 +115,6 @@ int main(int argc, char **argv)
     }
 
     sys_sleep(100 * 1000);
-    return;
 
     uint8_t mac_addr[6];
     get_mac_addr(NULL, mac_addr);

@@ -20,7 +20,8 @@ add_compile_options(-g)
 # 导入头文件
 include_directories(
         ${PROJECT_SOURCE_DIR}
-        ${PROJECT_SOURCE_DIR}/src/net/net 
+        ${PROJECT_SOURCE_DIR}/src/net/net
+        ${PROJECT_SOURCE_DIR}/src/app/echo
         ${PROJECT_SOURCE_DIR}/src/plat
         ${PROJECT_SOURCE_DIR}/src/app
 )
