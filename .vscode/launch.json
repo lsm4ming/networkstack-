@@ -25,5 +25,26 @@
             "preLaunchTask": "Build", // 在启动调试前执行的任务，确保 CMake 构建了你的项目
             "miDebuggerPath": "/usr/bin/gdb" // GDB 的路径
         },
+        {
+            "name": "net-test",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/net-test",
+            "args": [], // 传递给可执行文件的参数
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build", // 在启动调试前执行的任务，确保 CMake 构建了你的项目
+            "miDebuggerPath": "/usr/bin/gdb" // GDB 的路径
+        },
     ]
 }

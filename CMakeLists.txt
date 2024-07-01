@@ -20,7 +20,7 @@ add_compile_options(-g)
 # 导入头文件
 include_directories(
         ${PROJECT_SOURCE_DIR}
-        ${PROJECT_SOURCE_DIR}/src/net/net
+        ${PROJECT_SOURCE_DIR}/src/net/include
         ${PROJECT_SOURCE_DIR}/src/app/echo
         ${PROJECT_SOURCE_DIR}/src/plat
         ${PROJECT_SOURCE_DIR}/src/app
@@ -29,8 +29,13 @@ include_directories(
 # 搜索src下面的所有源文件，生成文件列表
 file(GLOB_RECURSE SOURCE_LIST "src/*.c" "src/*.h")
 
+# 排除测试文件
+list(REMOVE_ITEM SOURCE_LIST "${CMAKE_CURRENT_SOURCE_DIR}/src/app/test/main.c")
+
 # 将源文件列表加入到工程中
 add_executable(${PROJECT_NAME} main.c ${SOURCE_LIST})
+
+add_executable(${PROJECT_NAME}-test ${CMAKE_CURRENT_SOURCE_DIR}/src/app/test/main.c ${SOURCE_LIST})
 
 # 与一些库进行编译链接，生成最终的程序
 # 针对网络的平台配置
@@ -47,3 +52,4 @@ elseif (UNIX)
 endif ()
 
 target_link_libraries(${PROJECT_NAME} ${PCAP_ROOT_DIR}/libpcap.a ${OPENSSL_ROOT_DIR}/libssl.a ${OPENSSL_ROOT_DIR}/libcrypto.a pthread)
+target_link_libraries(${PROJECT_NAME}-test ${PCAP_ROOT_DIR}/libpcap.a ${OPENSSL_ROOT_DIR}/libssl.a ${OPENSSL_ROOT_DIR}/libcrypto.a pthread)
